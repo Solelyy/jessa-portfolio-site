@@ -6,7 +6,8 @@ import Contact from "./pages/Contact/Contact";
 
 function App() {
   return (
-    <div>
+    <div className="min-h-screen p-12 bg-lightBg dark:bg-darkBg text-black dark:text-white">
+    <header>
       <Navbar />
 
         <Routes>
@@ -14,6 +15,7 @@ function App() {
           <Route path="/projects" element={<Projects />}/>
           <Route path="/contact" element={<Contact />}/>
         </Routes>
+    </header>
     </div>
   );
 }
