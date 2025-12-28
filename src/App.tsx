@@ -1,23 +1,29 @@
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/layout/Navbar/Navbar";
+import Navbar from "./components/layout/Navbar";
 import Home from "./pages/Home/Home";
 import Projects from "./pages/Projects/Projects";
 import Contact from "./pages/Contact/Contact";
+import Footer from "./components/layout/Footer";
 
-function App() {
+export default function App() {
   return (
-    <div className="min-h-screen p-12 bg-lightBg dark:bg-darkBg text-black dark:text-white">
+    <div className="min-h-screen flex flex-col p-12 bg-lightBg dark:bg-darkBg text-black dark:text-white">
+
     <header>
       <Navbar />
-
-        <Routes>
-          <Route path="/" element={<Home />}/>
-          <Route path="/projects" element={<Projects />}/>
-          <Route path="/contact" element={<Contact />}/>
-        </Routes>
     </header>
+
+    <main className="flex-grow">
+      <Routes>
+        <Route path="/" element={<Home />}/>
+        <Route path="/projects" element={<Projects />}/>
+        <Route path="/contact" element={<Contact />}/>
+      </Routes>
+    </main>
+
+    <footer>
+      <Footer />
+    </footer>
     </div>
   );
 }
-
-export default App
