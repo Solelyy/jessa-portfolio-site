@@ -4,6 +4,7 @@ import Home from "./pages/Home/Home";
 import Projects from "./pages/Projects/Projects";
 import Contact from "./pages/Contact/Contact";
 import Footer from "./components/layout/Footer";
+import ProfileCard from "./components/cards/ProfileCard";
 
 export default function App() {
   return (
@@ -13,7 +14,7 @@ export default function App() {
       <Navbar />
     </header>
 
-    <main className="flex-grow">
+    <main className="grow">
       <Routes>
         <Route path="/" element={<Home />}/>
         <Route path="/projects" element={<Projects />}/>

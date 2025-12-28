@@ -61,3 +61,5 @@ logs/
 # TypeScript
 *.tsbuildinfo
 
+# Image
+src/assets/images/myself.jpg
