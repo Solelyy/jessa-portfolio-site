@@ -17,20 +17,41 @@ import intellij from "@/assets/logos/intellij.svg";
 import tailwind from "@/assets/logos/tailwindcss.svg";
 import springboot from "@/assets/logos/springboot.svg";
 
-const techs = [
-  { name: "React", src: reactLogo },
-  { name: "TypeScript", src: typeScriptLogo },
-  { name: "JavaScript", src: jsLogo },
-  { name: "Java", src: javaLogo },
-  { name: "Spring Boot", src: springboot },
-  { name: "Tailwind CSS", src: tailwind },
-  { name: "HTML", src: html },
-  { name: "CSS", src: css },
-  { name: "MySQL", src: mysqlLogo },
-  { name: "Git", src: gitLogo },
-  { name: "Figma", src: figma },
-  { name: "VS Code", src: vscode },
-  { name: "IntelliJ", src: intellij },
+type NormalTech = {
+  type: "normal";
+  name: string;
+  src: string;
+};
+
+type GithubTech = {
+  type: "github";
+  name: string;
+  srcDark: string;
+  srcLight: string;
+};
+
+type Tech = NormalTech | GithubTech;
+
+const techs: Tech[] = [
+  { type: "normal", name: "React", src: reactLogo },
+  { type: "normal", name: "TypeScript", src: typeScriptLogo },
+  { type: "normal", name: "JavaScript", src: jsLogo },
+  { type: "normal", name: "Java", src: javaLogo },
+  { type: "normal", name: "Spring Boot", src: springboot },
+  { type: "normal", name: "Tailwind CSS", src: tailwind },
+  { type: "normal", name: "HTML", src: html },
+  { type: "normal", name: "CSS", src: css },
+  { type: "normal", name: "MySQL", src: mysqlLogo },
+  { type: "normal", name: "Git", src: gitLogo },
+  { type: "normal", name: "Figma", src: figma },
+  { type: "normal", name: "VS Code", src: vscode },
+  { type: "normal", name: "IntelliJ", src: intellij },
+  {
+    type: "github",
+    name: "GitHub",
+    srcLight: gitHubLight,
+    srcDark: gitHubDark,
+  },
 ];
 
 export default function TechStack() {
@@ -54,7 +75,9 @@ export default function TechStack() {
 
   return (
     <div className="flex flex-col mt-4">
-      <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
+      <p className="text-center text-lg opacity-40">
+        Tech Stack and Tools
+      </p>
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
         <motion.div
@@ -63,44 +86,47 @@ export default function TechStack() {
           onHoverStart={() => startMarquee(60)}
           onHoverEnd={() => startMarquee(20)}
         >
-          {/* Tech logos */}
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
               className="relative group flex items-center"
               whileHover={{ scale: 1.2 }}
             >
-              <img src={tech.src} alt={tech.name} className={imgStyle} />
-              <span className="absolute -bottom-6 left-1/2 -translate-x-1/2
-                text-xs px-2 py-1 rounded-md bg-white dark:bg-darkCard text-black dark:text-white
-                opacity-0 group-hover:opacity-100 transition
-                whitespace-nowrap pointer-events-none"
+              {tech.type === "normal" && (
+                <img
+                  src={tech.src}
+                  alt={tech.name}
+                  className={imgStyle}
+                />
+              )}
+
+              {tech.type === "github" && (
+                <>
+                  <img
+                    src={tech.srcDark}
+                    alt={tech.name}
+                    className={`${imgStyle} hidden dark:block`}
+                  />
+                  <img
+                    src={tech.srcLight}
+                    alt={tech.name}
+                    className={`${imgStyle} dark:hidden`}
+                  />
+                </>
+              )}
+
+              <span
+                className="absolute -bottom-6 left-1/2 -translate-x-1/2
+                  text-xs px-2 py-1 rounded-md
+                  bg-white dark:bg-darkCard
+                  text-black dark:text-white
+                  opacity-0 group-hover:opacity-100 transition
+                  whitespace-nowrap pointer-events-none"
               >
                 {tech.name}
               </span>
             </motion.div>
           ))}
-
-          {/* GitHub special case for dark/light */}
-          <motion.div className="relative group flex items-center">
-            <img
-              src={gitHubDark}
-              alt="GitHub"
-              className="h-12 w-12 object-contain shrink-0 hidden dark:block"
-            />
-            <img
-              src={gitHubLight}
-              alt="GitHub"
-              className="h-12 w-12 object-contain shrink-0 dark:hidden"
-            />
-            <span className="absolute -bottom-8 left-1/2 -translate-x-1/2
-              text-xs px-2 py-1 rounded-md bg-black text-white
-              opacity-0 group-hover:opacity-100 transition
-              whitespace-nowrap pointer-events-none"
-            >
-              GitHub
-            </span>
-          </motion.div>
         </motion.div>
       </div>
     </div>
