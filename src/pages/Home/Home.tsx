@@ -1,5 +1,6 @@
 import LocationCard from "@/components/cards/LocationCard";
 import ProfileCard from "@/components/cards/ProfileCard";
+import ProjectGrid from "@/components/cards/ProjectGrid";
 import ResumeCard from "@/components/cards/ResumeCard";
 import TechStack from "@/components/cards/TechStack";
 
@@ -20,9 +21,10 @@ export default function Home() {
         </div>
       </div>
 
-      {/*Tech Stack Section */}
+      {/*Tech Stack Section & Projects*/}
       <div>
         <TechStack />
+        <ProjectGrid />
       </div>
       
     </main>

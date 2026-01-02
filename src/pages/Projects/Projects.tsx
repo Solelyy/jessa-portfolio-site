@@ -1,7 +1,9 @@
+import ProjectGrid from "@/components/cards/ProjectGrid";
+
 export default function Projects () {
 return (
-    <div>
-        <h1>This is the projects page.</h1>
-    </div>
+    <main className="min-h-screen">
+        <ProjectGrid />
+    </main>
 );
 };
