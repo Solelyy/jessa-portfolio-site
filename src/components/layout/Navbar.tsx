@@ -4,7 +4,12 @@ import darkMode from "@/assets/icons/darkmode.svg"
 import lightMode from "@/assets/icons/lightmode.svg"
 import { useEffect, useState } from "react";
 
-export default function Navbar() {
+//Contact Modal
+interface NavbarProps {
+    onContactClick: () => void;
+}
+
+export default function Navbar({onContactClick} : NavbarProps) {
     const navLinkClass = ({isActive} : {isActive:boolean}) =>
         isActive 
         ? "font-bold text-black dark:text-white"
@@ -35,7 +40,12 @@ export default function Navbar() {
             />
             </Link>
             <NavLink to="/projects" className={navLinkClass}>Projects</NavLink>
-            <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
+
+            <button 
+            onClick = {onContactClick}
+            className="font-regular hover:text-accent" >
+                Contact
+            </button>
 
             {/*Theme toggle */}
             <button
