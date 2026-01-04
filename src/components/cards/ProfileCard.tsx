@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function ProfileCard() {
     const navigate = useNavigate();
     return (
-        <main className="flex h-full gap-4 items-center p-8 bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl">
+        <main className="flex h-full gap-4 items-center p-6 bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl">
         <img
             src={myPic}
             alt="My picture"

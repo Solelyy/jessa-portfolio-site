@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import SocialLinks from "../cards/SocialLinks";
 
 interface ContactModalProps {
@@ -8,14 +9,25 @@ interface ContactModalProps {
 export default function ContactModal (
   {isOpen, onClose}: ContactModalProps
 ) {
+  useEffect(() => {
+    if(isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [isOpen]);
+  
   if (!isOpen) return null;
 
   return (
     /* Overlay */
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+    onClick={onClose}>
       
       {/* Modal box */}
-      <div className="bg-white dark:bg-darkCard rounded-2xl p-8 w-[90%] max-w-md relative">
+      <div className="bg-white dark:bg-darkCard rounded-2xl p-8 w-[90%] max-w-md relative"
+      onClick={(e) => e.stopPropagation()}>
         
         {/* Close button */}
         <button

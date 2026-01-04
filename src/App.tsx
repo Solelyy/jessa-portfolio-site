@@ -25,7 +25,6 @@ export default function App() {
       isOpen= {isContactOpen}
       onClose={() => setIsContactOpen(false)}
       />
-
     </main>
 
     <footer>
