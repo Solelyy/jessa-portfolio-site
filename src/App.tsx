@@ -4,27 +4,22 @@ import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Footer from "./components/layout/Footer";
 import { useState } from "react";
-import ContactModal from "./components/modal/ContactModal";
+import Personal from "./pages/Projects";
+import Contact from "./pages/Contact";
 
 export default function App() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
   return (
-    <div className="min-h-screen flex flex-col p-12 bg-lightBg dark:bg-darkBg text-black dark:text-white">
+    <div className="min-h-screen flex flex-col p-6 bg-lightBg dark:bg-darkBg text-black dark:text-white">
 
     <header>
-      <Navbar onContactClick={() => setIsContactOpen(true)}/>
+      <Navbar />
     </header>
-
     <main className="grow">
       <Routes>
         <Route path="/" element={<Home />}/>
-        <Route path="/projects" element={<Projects />}/>
+        <Route path="/personal" element={<Personal />}/>
+        <Route path="/contact" element={<Contact />} />
       </Routes>
-
-      <ContactModal 
-      isOpen= {isContactOpen}
-      onClose={() => setIsContactOpen(false)}
-      />
     </main>
 
     <footer>
