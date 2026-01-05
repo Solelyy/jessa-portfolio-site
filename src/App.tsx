@@ -1,10 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Home from "./pages/Home";
-import Projects from "./pages/Projects";
 import Footer from "./components/layout/Footer";
-import { useState } from "react";
-import Personal from "./pages/Projects";
+import Personal from "./pages/Personal";
 import Contact from "./pages/Contact";
 
 export default function App() {
