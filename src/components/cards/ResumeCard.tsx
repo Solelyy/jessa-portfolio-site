@@ -25,7 +25,7 @@ export default function ResumeCard() {
   return (
     <>
       {/* Resume Card */}
-      <main className="bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder p-8 rounded-2xl">
+      <main className="bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder p-6 md:p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300">
         <p className="text-xs opacity-50">2026 CV</p>
         <div className="flex justify-between items-center">
           <p className="text-3xl">Resume</p>

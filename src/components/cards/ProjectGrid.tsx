@@ -49,7 +49,7 @@ const projects: Project[] = [
 
 export default function ProjectGrid() {
   return (
-    <section className="mt-10">
+    <section className="mt-10" id="projects">
       <p className="text-center text-lg opacity-40">
         My Projects
       </p>

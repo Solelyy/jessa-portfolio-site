@@ -1,18 +1,12 @@
 import {Link, NavLink} from "react-router-dom";
-import logo from "@/assets/logos/logo-jg.png";
 import darkMode from "@/assets/icons/darkmode.svg"
 import lightMode from "@/assets/icons/lightmode.svg"
 import { useEffect, useState } from "react";
 
-//Contact Modal
-interface NavbarProps {
-    onContactClick: () => void;
-}
-
-export default function Navbar({onContactClick} : NavbarProps) {
+export default function Navbar() {
     const navLinkClass = ({isActive} : {isActive:boolean}) =>
         isActive 
-        ? "font-bold text-black dark:text-white"
+        ? "font-bold text-accent border py-2 px-4 rounded-3xl shadow-md"
         : "font-regular hover:text-pink-500";
 
     const [theme, setTheme] = useState <"light" |"dark"> (() => {
@@ -34,18 +28,15 @@ export default function Navbar({onContactClick} : NavbarProps) {
         <nav className="bg-white dark:bg-darkCard flex gap-4 items-center py-2 px-4 rounded-3xl border border-lightBorder dark:border-darkBorder justify-evenly h-12 w-1/2 mx-auto min-w-sm"> 
             <Link to="/">
             <img 
-            src={logo} 
+            src="/site-logo.png"
             alt="website's logo"
             className="h-16 w-auto"
             />
             </Link>
-            <NavLink to="/projects" className={navLinkClass}>Projects</NavLink>
 
-            <button 
-            onClick = {onContactClick}
-            className="font-regular hover:text-accent" >
-                Contact
-            </button>
+            <NavLink to="/personal" className={navLinkClass}>Personal</NavLink>
+
+            <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
 
             {/*Theme toggle */}
             <button
