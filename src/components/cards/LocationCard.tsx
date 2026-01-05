@@ -1,11 +1,6 @@
 export default function LocationCard() {
   return (
-    <div className="bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 space-y-4">
-
-    <p className="text-sm text-muted-foreground">
-        📍 Quezon City, Philippines
-    </p>
-
+    <div className="bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl space-y-4">
       {/* Map */}
       <div className="overflow-hidden rounded-xl border border-lightBorder dark:border-darkBorder">
         <iframe
