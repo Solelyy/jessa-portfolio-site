@@ -45,18 +45,15 @@ export default function TechStack() {
       <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
-        {/* Marquee wrapper */}
-        <div className="flex gap-10 whitespace-nowrap animate-marquee">
+        {/* Fixed marquee wrapper */}
+        <div className="flex gap-10 animate-marquee min-w-[200%]">
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
               className="relative group flex items-center"
               whileHover={{ scale: 1.2 }}
             >
-              {tech.type === "normal" && (
-                <img src={tech.src} alt={tech.name} className={imgStyle} />
-              )}
-
+              {tech.type === "normal" && <img src={tech.src} alt={tech.name} className={imgStyle} />}
               {tech.type === "github" && (
                 <>
                   <img src={tech.srcDark} alt={tech.name} className={`${imgStyle} hidden dark:block`} />
