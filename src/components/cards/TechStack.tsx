@@ -1,5 +1,5 @@
 import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import reactLogo from "@/assets/logos/react.svg";
 import typeScriptLogo from "@/assets/logos/typescript.png";
@@ -56,21 +56,23 @@ const techs: Tech[] = [
 
 export default function TechStack() {
   const controls = useAnimation();
+  const trackRef = useRef<HTMLDivElement>(null);
+
   const imgStyle = "h-12 w-12 object-contain shrink-0";
 
-  const startMarquee = (duration: number) => {
+  useEffect(() => {
+    if (!trackRef.current) return;
+
+    const trackWidth = trackRef.current.scrollWidth / 2;
+
     controls.start({
-      x: "-50%",
+      x: -trackWidth,
       transition: {
-        duration,
+        duration: 20,
         ease: "linear",
         repeat: Infinity,
       },
     });
-  };
-
-  useEffect(() => {
-    startMarquee(20);
   }, []);
 
   return (
@@ -81,10 +83,15 @@ export default function TechStack() {
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
         <motion.div
+          ref={trackRef}
           className="flex gap-10 items-center w-max"
           animate={controls}
-          onHoverStart={() => startMarquee(60)}
-          onHoverEnd={() => startMarquee(20)}
+          onHoverStart={() =>
+            controls.start({ transition: { duration: 60 } })
+          }
+          onHoverEnd={() =>
+            controls.start({ transition: { duration: 20 } })
+          }
         >
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
