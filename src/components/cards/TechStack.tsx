@@ -1,5 +1,5 @@
-import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 import reactLogo from "@/assets/logos/react.svg";
 import typeScriptLogo from "@/assets/logos/typescript.png";
@@ -17,19 +17,8 @@ import intellij from "@/assets/logos/intellij.svg";
 import tailwind from "@/assets/logos/tailwindcss.svg";
 import springboot from "@/assets/logos/springboot.svg";
 
-type NormalTech = {
-  type: "normal";
-  name: string;
-  src: string;
-};
-
-type GithubTech = {
-  type: "github";
-  name: string;
-  srcDark: string;
-  srcLight: string;
-};
-
+type NormalTech = { type: "normal"; name: string; src: string };
+type GithubTech = { type: "github"; name: string; srcDark: string; srcLight: string };
 type Tech = NormalTech | GithubTech;
 
 const techs: Tech[] = [
@@ -50,67 +39,49 @@ const techs: Tech[] = [
 ];
 
 export default function TechStack() {
-  const controls = useAnimation();
   const trackRef = useRef<HTMLDivElement>(null);
+  const [duration, setDuration] = useState(20); // default duration
 
-  const imgStyle = "h-12 w-12 object-contain shrink-0";
+  const imgStyle = "h-12 w-12 object-contain flex-shrink-0";
 
   useEffect(() => {
     if (!trackRef.current) return;
 
     const el = trackRef.current;
 
-    const startMarquee = () => {
-      const width = el.scrollWidth / 2;
-      if (width === 0) return;
-
-      controls.start({
-        x: -width,
-        transition: { duration: 20, ease: "linear", repeat: Infinity },
-      });
+    const calculateDuration = () => {
+      const containerWidth = el.offsetWidth;
+      const contentWidth = el.scrollWidth / 2; // since we duplicated the array
+      const speed = 50; // pixels per second
+      setDuration(contentWidth / speed);
     };
 
-    // Wait for all images inside the track to load
     const images = el.querySelectorAll("img");
     let loadedCount = 0;
 
     images.forEach((img) => {
       if (img.complete) loadedCount++;
-      else
-        img.addEventListener("load", () => {
-          loadedCount++;
-          if (loadedCount === images.length) startMarquee();
-        });
+      else img.addEventListener("load", () => {
+        loadedCount++;
+        if (loadedCount === images.length) calculateDuration();
+      });
     });
 
-    // If all images were already loaded
-    if (loadedCount === images.length) startMarquee();
+    if (loadedCount === images.length) calculateDuration();
 
-    // Handle resize / orientation changes
-    const handleResize = () => {
-      controls.stop(); // stop ongoing animation
-      startMarquee();
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [controls]);
+    window.addEventListener("resize", calculateDuration);
+    return () => window.removeEventListener("resize", calculateDuration);
+  }, []);
 
   return (
     <div className="flex flex-col mt-4">
       <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
-        <motion.div
+        <div
           ref={trackRef}
-          className="flex gap-10 items-center w-max"
-          animate={controls}
-          onHoverStart={() =>
-            controls.start({ transition: { duration: 60 } })
-          }
-          onHoverEnd={() =>
-            controls.start({ transition: { duration: 20 } })
-          }
+          className="flex gap-10 whitespace-nowrap animate-marquee"
+          style={{ animationDuration: `${duration}s` }}
         >
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
@@ -118,22 +89,11 @@ export default function TechStack() {
               className="relative group flex items-center"
               whileHover={{ scale: 1.2 }}
             >
-              {tech.type === "normal" && (
-                <img src={tech.src} alt={tech.name} className={imgStyle} />
-              )}
-
+              {tech.type === "normal" && <img src={tech.src} alt={tech.name} className={imgStyle} />}
               {tech.type === "github" && (
                 <>
-                  <img
-                    src={tech.srcDark}
-                    alt={tech.name}
-                    className={`${imgStyle} hidden dark:block`}
-                  />
-                  <img
-                    src={tech.srcLight}
-                    alt={tech.name}
-                    className={`${imgStyle} dark:hidden`}
-                  />
+                  <img src={tech.srcDark} alt={tech.name} className={`${imgStyle} hidden dark:block`} />
+                  <img src={tech.srcLight} alt={tech.name} className={`${imgStyle} dark:hidden`} />
                 </>
               )}
 
@@ -149,7 +109,7 @@ export default function TechStack() {
               </span>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
