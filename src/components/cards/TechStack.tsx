@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import reactLogo from "@/assets/logos/react.svg";
 import typeScriptLogo from "@/assets/logos/typescript.png";
 import jsLogo from "@/assets/logos/js.png";
@@ -37,15 +38,51 @@ const techs: Tech[] = [
 ];
 
 export default function TechStack() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const controls = useAnimation();
+  const [trackWidth, setTrackWidth] = useState(0);
+
   const imgStyle = "h-12 w-12 object-contain inline-block will-change-transform";
+
+  // Measure the width of one set of logos
+  useEffect(() => {
+    const updateWidth = () => {
+      if (!trackRef.current) return;
+      const firstSetWidth = trackRef.current.scrollWidth / 2; // one set width
+      setTrackWidth(firstSetWidth);
+    };
+
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
+  // Start animation when width is ready
+  useEffect(() => {
+    if (!trackWidth) return;
+
+    controls.start({
+      x: -trackWidth,
+      transition: {
+        duration: 20,
+        ease: "linear",
+        repeat: Infinity,
+      },
+    });
+  }, [trackWidth, controls]);
 
   return (
     <div className="flex flex-col mt-4">
-      <p className="text-center text-lg opacity-40 text-accent">Tech Stack and Tools</p>
+      <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
-      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden">
-        {/* Marquee wrapper */}
-        <div className="whitespace-nowrap animate-marquee">
+      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
+        <motion.div
+          ref={trackRef}
+          className="flex"
+          animate={controls}
+        >
+          {/* Duplicate the set for seamless scroll */}
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
@@ -69,7 +106,7 @@ export default function TechStack() {
               </span>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
