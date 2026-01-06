@@ -1,5 +1,4 @@
-import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import reactLogo from "@/assets/logos/react.svg";
 import typeScriptLogo from "@/assets/logos/typescript.png";
 import jsLogo from "@/assets/logos/js.png";
@@ -38,75 +37,15 @@ const techs: Tech[] = [
 ];
 
 export default function TechStack() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const controls = useAnimation();
-  const [trackWidth, setTrackWidth] = useState(0);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [isTouching, setIsTouching] = useState(false); // pause on touch
-
-  // Responsive logo sizing
-  const imgStyle = "h-20 md:h-24 w-auto object-contain inline-block will-change-transform";
-
-  // Wait for all images to load
-  useEffect(() => {
-    if (!trackRef.current) return;
-    const images = trackRef.current.querySelectorAll("img");
-    let loadedCount = 0;
-
-    images.forEach((img) => {
-      if (img.complete) {
-        loadedCount++;
-      } else {
-        img.onload = () => {
-          loadedCount++;
-          if (loadedCount === images.length) setImagesLoaded(true);
-        };
-        img.onerror = () => {
-          loadedCount++;
-          if (loadedCount === images.length) setImagesLoaded(true);
-        };
-      }
-    });
-
-    if (loadedCount === images.length) setImagesLoaded(true);
-  }, []);
-
-  // Measure width after images are loaded or on resize
-  useEffect(() => {
-    if (!imagesLoaded || !trackRef.current) return;
-
-    const updateWidth = () => {
-      if (!trackRef.current) return;
-      const firstSetWidth = trackRef.current.scrollWidth / 2;
-      setTrackWidth(firstSetWidth);
-    };
-
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, [imagesLoaded]);
-
-  // Start animation
-  useEffect(() => {
-    if (!trackWidth) return;
-    if (isTouching) return; // pause on touch
-
-    controls.start({
-      x: -trackWidth,
-      transition: { duration: 20, ease: "linear", repeat: Infinity },
-    });
-  }, [trackWidth, controls, isTouching]);
+  const imgStyle = "h-12 w-12 object-contain inline-block will-change-transform";
 
   return (
     <div className="flex flex-col mt-4">
       <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
-      <div
-        className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 md:h-36 w-full mt-4 overflow-hidden flex items-center"
-        onTouchStart={() => setIsTouching(true)}
-        onTouchEnd={() => setIsTouching(false)}
-      >
-        <motion.div ref={trackRef} className="flex" animate={controls}>
+      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden">
+        {/* Marquee wrapper */}
+        <div className="whitespace-nowrap animate-marquee flex items-center">
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
@@ -130,7 +69,7 @@ export default function TechStack() {
               </span>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
