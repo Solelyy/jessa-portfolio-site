@@ -38,7 +38,7 @@ const techs: Tech[] = [
 ];
 
 export default function TechStack() {
-  const imgStyle = "h-12 w-12 object-contain flex-shrink-0";
+  const imgStyle = "h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 object-contain flex-shrink-0";
 
   return (
     <div className="flex flex-col mt-4">
