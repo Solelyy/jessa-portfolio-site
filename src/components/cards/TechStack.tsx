@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 import reactLogo from "@/assets/logos/react.svg";
 import typeScriptLogo from "@/assets/logos/typescript.png";
@@ -38,7 +39,8 @@ const techs: Tech[] = [
 ];
 
 export default function TechStack() {
-  // Fixed logo size for all screens
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
   const imgStyle = "h-12 w-12 object-contain flex-shrink-0";
 
   return (
@@ -52,6 +54,7 @@ export default function TechStack() {
             <motion.div
               key={index}
               className="relative group flex items-center"
+              onClick={() => setActiveIndex(activeIndex === index ? null : index)} // toggle on tap
               whileHover={{ scale: 1.2 }}
             >
               {tech.type === "normal" && <img src={tech.src} alt={tech.name} className={imgStyle} />}
@@ -63,12 +66,16 @@ export default function TechStack() {
               )}
 
               <span
-                className="absolute -bottom-6 left-1/2 -translate-x-1/2
+                className={`
+                  absolute -bottom-6 left-1/2 -translate-x-1/2
                   text-xs px-2 py-1 rounded-md
                   bg-white dark:bg-darkCard
                   text-black dark:text-white
-                  opacity-0 group-hover:opacity-100 transition
-                  whitespace-nowrap pointer-events-none"
+                  transition
+                  whitespace-nowrap pointer-events-none
+                  opacity-0 group-hover:opacity-100
+                  ${activeIndex === index ? "opacity-100" : ""}
+                `}
               >
                 {tech.name}
               </span>
