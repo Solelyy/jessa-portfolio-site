@@ -38,7 +38,8 @@ const techs: Tech[] = [
 ];
 
 export default function TechStack() {
-  const imgStyle = "h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0";
+  // Fixed logo size for all screens
+  const imgStyle = "h-12 w-12 object-contain flex-shrink-0";
 
   return (
     <div className="flex flex-col mt-4">
@@ -46,7 +47,7 @@ export default function TechStack() {
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
         {/* Fixed marquee wrapper */}
-        <div className="flex gap-10 animate-marquee min-w-[200%]">
+        <div className="flex gap-10 flex-nowrap animate-marquee min-w-[300%]">
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
