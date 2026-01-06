@@ -1,5 +1,5 @@
 import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import reactLogo from "@/assets/logos/react.svg";
 import typeScriptLogo from "@/assets/logos/typescript.png";
@@ -57,6 +57,7 @@ const techs: Tech[] = [
 export default function TechStack() {
   const controls = useAnimation();
   const trackRef = useRef<HTMLDivElement>(null);
+  const [trackWidth, setTrackWidth] = useState(0);
 
   const imgStyle = "h-12 w-12 object-contain shrink-0";
 
@@ -65,32 +66,24 @@ export default function TechStack() {
 
     const el = trackRef.current;
 
-    const startMarquee = () => {
+    const calculateWidthAndAnimate = () => {
       const width = el.scrollWidth / 2;
-
-      if (width === 0) return;
-
+      if (width === 0) return; // wait until images load
+      setTrackWidth(width);
       controls.start({
         x: -width,
-        transition: {
-          duration: 20,
-          ease: "linear",
-          repeat: Infinity,
-        },
+        transition: { duration: 20, ease: "linear", repeat: Infinity },
       });
     };
 
-    // Wait for layout + images (iPad fix)
+    // Wait for first paint + images
     requestAnimationFrame(() => {
-      setTimeout(startMarquee, 100);
+      setTimeout(calculateWidthAndAnimate, 100);
     });
 
-    // iPad orientation / resize fix
-    window.addEventListener("resize", startMarquee);
-
-    return () => {
-      window.removeEventListener("resize", startMarquee);
-    };
+    // Recalculate on resize / orientation change
+    window.addEventListener("resize", calculateWidthAndAnimate);
+    return () => window.removeEventListener("resize", calculateWidthAndAnimate);
   }, [controls]);
 
   return (
@@ -102,7 +95,7 @@ export default function TechStack() {
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
         <motion.div
           ref={trackRef}
-          className="flex gap-10 items-center w-max"
+          className="inline-flex gap-10 items-center will-change-transform"
           animate={controls}
           onHoverStart={() =>
             controls.start({ transition: { duration: 60 } })
@@ -118,11 +111,7 @@ export default function TechStack() {
               whileHover={{ scale: 1.2 }}
             >
               {tech.type === "normal" && (
-                <img
-                  src={tech.src}
-                  alt={tech.name}
-                  className={imgStyle}
-                />
+                <img src={tech.src} alt={tech.name} className={imgStyle} />
               )}
 
               {tech.type === "github" && (
