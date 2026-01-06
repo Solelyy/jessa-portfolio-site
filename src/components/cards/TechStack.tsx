@@ -57,10 +57,11 @@ const techs: Tech[] = [
 export default function TechStack() {
   const controls = useAnimation();
   const trackRef = useRef<HTMLDivElement>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [allImagesLoaded, setAllImagesLoaded] = useState(false);
+
   const imgStyle = "h-12 w-12 object-contain shrink-0";
 
-  // Wait until all images are loaded
+  // Wait until all images are loaded before starting animation
   useEffect(() => {
     if (!trackRef.current) return;
 
@@ -69,7 +70,7 @@ export default function TechStack() {
 
     const onLoad = () => {
       loadedCount++;
-      if (loadedCount === imgs.length) setIsLoaded(true);
+      if (loadedCount === imgs.length) setAllImagesLoaded(true);
     };
 
     imgs.forEach((img) => {
@@ -80,10 +81,11 @@ export default function TechStack() {
 
   // Start animation after images are fully loaded
   useEffect(() => {
-    if (!isLoaded || !trackRef.current) return;
+    if (!allImagesLoaded || !trackRef.current) return;
 
     const el = trackRef.current;
-    const startMarquee = () => {
+
+    const startAnimation = () => {
       const width = el.scrollWidth / 2;
       if (width === 0) return;
 
@@ -93,24 +95,23 @@ export default function TechStack() {
       });
     };
 
-    // Delay for layout stabilization
-    requestAnimationFrame(() => {
-      setTimeout(startMarquee, 100);
-    });
+    // Delay slightly for iPad WebKit to fully paint
+    requestAnimationFrame(() => setTimeout(startAnimation, 50));
 
-    // Recalculate on resize / orientation
-    window.addEventListener("resize", startMarquee);
-    return () => window.removeEventListener("resize", startMarquee);
-  }, [isLoaded, controls]);
+    // Recalculate on resize / orientation change
+    window.addEventListener("resize", startAnimation);
+    return () => window.removeEventListener("resize", startAnimation);
+  }, [allImagesLoaded, controls]);
 
   return (
     <div className="flex flex-col mt-4">
-      <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
+      <p className="text-center text-lg opacity-40 text-accent">Tech Stack and Tools</p>
 
-      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
+      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center pr-0.5">
         <motion.div
           ref={trackRef}
           className="inline-flex gap-10 items-center will-change-transform"
+          style={{ transform: "translate3d(0,0,0)", backfaceVisibility: "hidden" }}
           animate={controls}
           onHoverStart={() => controls.start({ transition: { duration: 60 } })}
           onHoverEnd={() => controls.start({ transition: { duration: 20 } })}
