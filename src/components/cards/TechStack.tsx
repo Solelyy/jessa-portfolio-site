@@ -57,52 +57,63 @@ const techs: Tech[] = [
 export default function TechStack() {
   const controls = useAnimation();
   const trackRef = useRef<HTMLDivElement>(null);
-  const [trackWidth, setTrackWidth] = useState(0);
-
+  const [isLoaded, setIsLoaded] = useState(false);
   const imgStyle = "h-12 w-12 object-contain shrink-0";
 
+  // Wait until all images are loaded
   useEffect(() => {
     if (!trackRef.current) return;
 
-    const el = trackRef.current;
+    const imgs = trackRef.current.querySelectorAll("img");
+    let loadedCount = 0;
 
-    const calculateWidthAndAnimate = () => {
+    const onLoad = () => {
+      loadedCount++;
+      if (loadedCount === imgs.length) setIsLoaded(true);
+    };
+
+    imgs.forEach((img) => {
+      if ((img as HTMLImageElement).complete) onLoad();
+      else img.addEventListener("load", onLoad);
+    });
+  }, []);
+
+  // Start animation after images are fully loaded
+  useEffect(() => {
+    if (!isLoaded || !trackRef.current) return;
+
+    const el = trackRef.current;
+    const startMarquee = () => {
       const width = el.scrollWidth / 2;
-      if (width === 0) return; // wait until images load
-      setTrackWidth(width);
+      if (width === 0) return;
+
       controls.start({
         x: -width,
         transition: { duration: 20, ease: "linear", repeat: Infinity },
       });
     };
 
-    // Wait for first paint + images
+    // Delay for layout stabilization
     requestAnimationFrame(() => {
-      setTimeout(calculateWidthAndAnimate, 100);
+      setTimeout(startMarquee, 100);
     });
 
-    // Recalculate on resize / orientation change
-    window.addEventListener("resize", calculateWidthAndAnimate);
-    return () => window.removeEventListener("resize", calculateWidthAndAnimate);
-  }, [controls]);
+    // Recalculate on resize / orientation
+    window.addEventListener("resize", startMarquee);
+    return () => window.removeEventListener("resize", startMarquee);
+  }, [isLoaded, controls]);
 
   return (
     <div className="flex flex-col mt-4">
-      <p className="text-center text-lg opacity-40">
-        Tech Stack and Tools
-      </p>
+      <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
         <motion.div
           ref={trackRef}
           className="inline-flex gap-10 items-center will-change-transform"
           animate={controls}
-          onHoverStart={() =>
-            controls.start({ transition: { duration: 60 } })
-          }
-          onHoverEnd={() =>
-            controls.start({ transition: { duration: 20 } })
-          }
+          onHoverStart={() => controls.start({ transition: { duration: 60 } })}
+          onHoverEnd={() => controls.start({ transition: { duration: 20 } })}
         >
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
