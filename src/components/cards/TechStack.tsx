@@ -50,12 +50,12 @@ export default function TechStack() {
     const el = trackRef.current;
 
     const calculateDuration = () => {
-      const containerWidth = el.offsetWidth;
-      const contentWidth = el.scrollWidth / 2; // since we duplicated the array
+      const contentWidth = el.scrollWidth / 2; // duplicated array
       const speed = 50; // pixels per second
       setDuration(contentWidth / speed);
     };
 
+    // Wait for all images inside the track to fully load (iPad fix)
     const images = el.querySelectorAll("img");
     let loadedCount = 0;
 
@@ -67,10 +67,14 @@ export default function TechStack() {
       });
     });
 
+    // If all images were already loaded
     if (loadedCount === images.length) calculateDuration();
 
-    window.addEventListener("resize", calculateDuration);
-    return () => window.removeEventListener("resize", calculateDuration);
+    // Recalculate on resize/orientation change
+    const handleResize = () => calculateDuration();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
