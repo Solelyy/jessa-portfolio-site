@@ -63,17 +63,35 @@ export default function TechStack() {
   useEffect(() => {
     if (!trackRef.current) return;
 
-    const trackWidth = trackRef.current.scrollWidth / 2;
+    const el = trackRef.current;
 
-    controls.start({
-      x: -trackWidth,
-      transition: {
-        duration: 20,
-        ease: "linear",
-        repeat: Infinity,
-      },
+    const startMarquee = () => {
+      const width = el.scrollWidth / 2;
+
+      if (width === 0) return;
+
+      controls.start({
+        x: -width,
+        transition: {
+          duration: 20,
+          ease: "linear",
+          repeat: Infinity,
+        },
+      });
+    };
+
+    // Wait for layout + images (iPad fix)
+    requestAnimationFrame(() => {
+      setTimeout(startMarquee, 100);
     });
-  }, []);
+
+    // iPad orientation / resize fix
+    window.addEventListener("resize", startMarquee);
+
+    return () => {
+      window.removeEventListener("resize", startMarquee);
+    };
+  }, [controls]);
 
   return (
     <div className="flex flex-col mt-4">
