@@ -1,5 +1,5 @@
-import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 import reactLogo from "@/assets/logos/react.svg";
 import typeScriptLogo from "@/assets/logos/typescript.png";
@@ -17,19 +17,8 @@ import intellij from "@/assets/logos/intellij.svg";
 import tailwind from "@/assets/logos/tailwindcss.svg";
 import springboot from "@/assets/logos/springboot.svg";
 
-type NormalTech = {
-  type: "normal";
-  name: string;
-  src: string;
-};
-
-type GithubTech = {
-  type: "github";
-  name: string;
-  srcDark: string;
-  srcLight: string;
-};
-
+type NormalTech = { type: "normal"; name: string; src: string };
+type GithubTech = { type: "github"; name: string; srcDark: string; srcLight: string };
 type Tech = NormalTech | GithubTech;
 
 const techs: Tech[] = [
@@ -46,113 +35,63 @@ const techs: Tech[] = [
   { type: "normal", name: "Figma", src: figma },
   { type: "normal", name: "VS Code", src: vscode },
   { type: "normal", name: "IntelliJ", src: intellij },
-  {
-    type: "github",
-    name: "GitHub",
-    srcLight: gitHubLight,
-    srcDark: gitHubDark,
-  },
+  { type: "github", name: "GitHub", srcLight: gitHubLight, srcDark: gitHubDark },
 ];
 
 export default function TechStack() {
-  const controls = useAnimation();
-  const trackRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const imgStyle = "h-12 w-12 object-contain shrink-0";
+  const imgStyle = "h-12 w-12 object-contain flex-shrink-0";
 
-  useEffect(() => {
-    if (!trackRef.current) return;
+  const handleTap = (index: number) => {
+    setActiveIndex(index);
 
-    const el = trackRef.current;
+    // Clear previous timeout if any
+    const timeoutId = setTimeout(() => {
+      setActiveIndex(null); // hide tooltip after 2s
+    }, 2000);
 
-    const startMarquee = () => {
-      const width = el.scrollWidth / 2;
-
-      if (width === 0) return;
-
-      controls.start({
-        x: -width,
-        transition: {
-          duration: 20,
-          ease: "linear",
-          repeat: Infinity,
-        },
-      });
-    };
-
-    // Wait for layout + images (iPad fix)
-    requestAnimationFrame(() => {
-      setTimeout(startMarquee, 100);
-    });
-
-    // iPad orientation / resize fix
-    window.addEventListener("resize", startMarquee);
-
-    return () => {
-      window.removeEventListener("resize", startMarquee);
-    };
-  }, [controls]);
+    // Optional: clear timeout on next tap to avoid overlaps
+    return () => clearTimeout(timeoutId);
+  };
 
   return (
     <div className="flex flex-col mt-4">
-      <p className="text-center text-lg opacity-40">
-        Tech Stack and Tools
-      </p>
+      <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
-        <motion.div
-          ref={trackRef}
-          className="flex gap-10 items-center w-max"
-          animate={controls}
-          onHoverStart={() =>
-            controls.start({ transition: { duration: 60 } })
-          }
-          onHoverEnd={() =>
-            controls.start({ transition: { duration: 20 } })
-          }
-        >
+        <div className="flex gap-10 flex-nowrap animate-marquee min-w-[300%]">
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
               className="relative group flex items-center"
-              whileHover={{ scale: 1.2 }}
+              onClick={() => handleTap(index)}
             >
-              {tech.type === "normal" && (
-                <img
-                  src={tech.src}
-                  alt={tech.name}
-                  className={imgStyle}
-                />
-              )}
-
+              {tech.type === "normal" && <img src={tech.src} alt={tech.name} className={imgStyle} />}
               {tech.type === "github" && (
                 <>
-                  <img
-                    src={tech.srcDark}
-                    alt={tech.name}
-                    className={`${imgStyle} hidden dark:block`}
-                  />
-                  <img
-                    src={tech.srcLight}
-                    alt={tech.name}
-                    className={`${imgStyle} dark:hidden`}
-                  />
+                  <img src={tech.srcDark} alt={tech.name} className={`${imgStyle} hidden dark:block`} />
+                  <img src={tech.srcLight} alt={tech.name} className={`${imgStyle} dark:hidden`} />
                 </>
               )}
 
               <span
-                className="absolute -bottom-6 left-1/2 -translate-x-1/2
+                className={`
+                  absolute -bottom-6 left-1/2 -translate-x-1/2
                   text-xs px-2 py-1 rounded-md
                   bg-white dark:bg-darkCard
                   text-black dark:text-white
-                  opacity-0 group-hover:opacity-100 transition
-                  whitespace-nowrap pointer-events-none"
+                  transition-opacity duration-300
+                  whitespace-nowrap pointer-events-none
+                  opacity-0 group-hover:opacity-100
+                  ${activeIndex === index ? "opacity-100" : ""}
+                `}
               >
                 {tech.name}
               </span>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );

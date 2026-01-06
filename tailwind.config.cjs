@@ -15,6 +15,15 @@ module.exports = {
         accent: "#EC4899",
         darkCard: "#111827"
       },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' }, // moves half of the duplicated track
+        },
+      },
+      animation: {
+        marquee: 'marquee 25s linear infinite', // adjust duration for speed
+      },
     },
   },
   plugins: [],
