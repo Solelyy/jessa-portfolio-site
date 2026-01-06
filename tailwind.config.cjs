@@ -17,30 +17,12 @@ module.exports = {
       },
       keyframes: {
         marquee: {
-<<<<<<< HEAD
-<<<<<<< HEAD
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' }, // moves half of the duplicated track
         },
       },
       animation: {
         marquee: 'marquee 25s linear infinite', // adjust duration for speed
-=======
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
-      },
-      animation: {
-        marquee: 'marquee linear infinite',
->>>>>>> aa0f26d (fix 9)
-=======
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' }, // moves half of the duplicated track
-        },
-      },
-      animation: {
-        marquee: 'marquee 25s linear infinite', // adjust duration for speed
->>>>>>> 271be45 (fix 11)
       },
     },
   },
