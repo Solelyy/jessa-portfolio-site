@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import reactLogo from "@/assets/logos/react.svg";
@@ -40,52 +40,64 @@ const techs: Tech[] = [
 
 export default function TechStack() {
   const trackRef = useRef<HTMLDivElement>(null);
-  const [duration, setDuration] = useState(20); // default duration
+  const controls = useAnimation();
+  const [ready, setReady] = useState(false); // Wait until images loaded
 
   const imgStyle = "h-12 w-12 object-contain flex-shrink-0";
 
+  // 1️⃣ Wait until all images are loaded
   useEffect(() => {
     if (!trackRef.current) return;
 
     const el = trackRef.current;
-
-    const calculateDuration = () => {
-      const contentWidth = el.scrollWidth / 2; // duplicated array
-      const speed = 50; // pixels per second
-      setDuration(contentWidth / speed);
-    };
-
-    // Wait for all images inside the track to fully load (iPad fix)
     const images = el.querySelectorAll("img");
     let loadedCount = 0;
 
+    const checkStart = () => {
+      loadedCount++;
+      if (loadedCount === images.length) {
+        // Force layout reflow (important for iPad)
+        el.getBoundingClientRect();
+        setReady(true);
+      }
+    };
+
     images.forEach((img) => {
-      if (img.complete) loadedCount++;
-      else img.addEventListener("load", () => {
-        loadedCount++;
-        if (loadedCount === images.length) calculateDuration();
-      });
+      if (img.complete) checkStart();
+      else img.addEventListener("load", checkStart);
     });
 
-    // If all images were already loaded
-    if (loadedCount === images.length) calculateDuration();
-
-    // Recalculate on resize/orientation change
-    const handleResize = () => calculateDuration();
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
+    return () => images.forEach((img) => img.removeEventListener("load", checkStart));
   }, []);
+
+  // 2️⃣ Start smooth infinite Framer Motion animation after ready
+  useEffect(() => {
+    if (!ready || !trackRef.current) return;
+
+    const el = trackRef.current;
+    const width = el.scrollWidth / 2; // duplicated array for infinite scroll
+
+    controls.start({
+      x: -width,
+      transition: {
+        duration: 20,
+        ease: "linear",
+        repeat: Infinity,
+      },
+    });
+  }, [ready, controls]);
 
   return (
     <div className="flex flex-col mt-4">
       <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
-        <div
+        <motion.div
           ref={trackRef}
-          className="flex gap-10 whitespace-nowrap animate-marquee"
-          style={{ animationDuration: `${duration}s` }}
+          className="flex gap-10 items-center w-max"
+          animate={controls}
+          onHoverStart={() => controls.start({ transition: { duration: 60 } })}
+          onHoverEnd={() => controls.start({ transition: { duration: 20 } })}
         >
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
@@ -113,7 +125,7 @@ export default function TechStack() {
               </span>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
