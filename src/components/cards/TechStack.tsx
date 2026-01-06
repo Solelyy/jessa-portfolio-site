@@ -43,19 +43,29 @@ export default function TechStack() {
 
   const imgStyle = "h-12 w-12 object-contain flex-shrink-0";
 
+  const handleTap = (index: number) => {
+    setActiveIndex(index);
+
+    // Clear previous timeout if any
+    const timeoutId = setTimeout(() => {
+      setActiveIndex(null); // hide tooltip after 2s
+    }, 2000);
+
+    // Optional: clear timeout on next tap to avoid overlaps
+    return () => clearTimeout(timeoutId);
+  };
+
   return (
     <div className="flex flex-col mt-4">
       <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
-        {/* Fixed marquee wrapper */}
         <div className="flex gap-10 flex-nowrap animate-marquee min-w-[300%]">
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
               className="relative group flex items-center"
-              onClick={() => setActiveIndex(activeIndex === index ? null : index)} // toggle on tap
-              whileHover={{ scale: 1.2 }}
+              onClick={() => handleTap(index)}
             >
               {tech.type === "normal" && <img src={tech.src} alt={tech.name} className={imgStyle} />}
               {tech.type === "github" && (
@@ -71,7 +81,7 @@ export default function TechStack() {
                   text-xs px-2 py-1 rounded-md
                   bg-white dark:bg-darkCard
                   text-black dark:text-white
-                  transition
+                  transition-opacity duration-300
                   whitespace-nowrap pointer-events-none
                   opacity-0 group-hover:opacity-100
                   ${activeIndex === index ? "opacity-100" : ""}
