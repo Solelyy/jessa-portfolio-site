@@ -1,5 +1,4 @@
-import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 import reactLogo from "@/assets/logos/react.svg";
 import typeScriptLogo from "@/assets/logos/typescript.png";
@@ -39,73 +38,25 @@ const techs: Tech[] = [
 ];
 
 export default function TechStack() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const controls = useAnimation();
-  const [ready, setReady] = useState(false); // Wait until images loaded
-
   const imgStyle = "h-12 w-12 object-contain flex-shrink-0";
-
-  // 1️⃣ Wait until all images are loaded
-  useEffect(() => {
-    if (!trackRef.current) return;
-
-    const el = trackRef.current;
-    const images = el.querySelectorAll("img");
-    let loadedCount = 0;
-
-    const checkStart = () => {
-      loadedCount++;
-      if (loadedCount === images.length) {
-        // Force layout reflow (important for iPad)
-        el.getBoundingClientRect();
-        setReady(true);
-      }
-    };
-
-    images.forEach((img) => {
-      if (img.complete) checkStart();
-      else img.addEventListener("load", checkStart);
-    });
-
-    return () => images.forEach((img) => img.removeEventListener("load", checkStart));
-  }, []);
-
-  // 2️⃣ Start smooth infinite Framer Motion animation after ready
-  useEffect(() => {
-    if (!ready || !trackRef.current) return;
-
-    const el = trackRef.current;
-    const width = el.scrollWidth / 2; // duplicated array for infinite scroll
-
-    controls.start({
-      x: -width,
-      transition: {
-        duration: 20,
-        ease: "linear",
-        repeat: Infinity,
-      },
-    });
-  }, [ready, controls]);
 
   return (
     <div className="flex flex-col mt-4">
       <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
-        <motion.div
-          ref={trackRef}
-          className="flex gap-10 items-center w-max"
-          animate={controls}
-          onHoverStart={() => controls.start({ transition: { duration: 60 } })}
-          onHoverEnd={() => controls.start({ transition: { duration: 20 } })}
-        >
+        {/* Marquee wrapper */}
+        <div className="flex gap-10 whitespace-nowrap animate-marquee">
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
               className="relative group flex items-center"
               whileHover={{ scale: 1.2 }}
             >
-              {tech.type === "normal" && <img src={tech.src} alt={tech.name} className={imgStyle} />}
+              {tech.type === "normal" && (
+                <img src={tech.src} alt={tech.name} className={imgStyle} />
+              )}
+
               {tech.type === "github" && (
                 <>
                   <img src={tech.srcDark} alt={tech.name} className={`${imgStyle} hidden dark:block`} />
@@ -125,7 +76,7 @@ export default function TechStack() {
               </span>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
