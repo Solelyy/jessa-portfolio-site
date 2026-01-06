@@ -46,12 +46,10 @@ export default function TechStack() {
   const handleTap = (index: number) => {
     setActiveIndex(index);
 
-    // Clear previous timeout if any
     const timeoutId = setTimeout(() => {
-      setActiveIndex(null); // hide tooltip after 2s
+      setActiveIndex(null);
     }, 2000);
 
-    // Optional: clear timeout on next tap to avoid overlaps
     return () => clearTimeout(timeoutId);
   };
 
@@ -60,8 +58,8 @@ export default function TechStack() {
       <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
       <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
-        <div className="flex gap-10 flex-nowrap animate-marquee min-w-[300%]">
-          {[...techs, ...techs].map((tech, index) => (
+        <div className="flex gap-10 flex-nowrap animate-marquee min-w-max">
+          {[...techs, ...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
               className="relative group flex items-center"

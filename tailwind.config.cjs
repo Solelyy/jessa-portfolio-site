@@ -18,7 +18,7 @@ module.exports = {
       keyframes: {
         marquee: {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' }, // moves half of the duplicated track
+          '100%': { transform: 'translateX(-33.333%)' },
         },
       },
       animation: {
