@@ -1,4 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect, useRef } from "react";
+
 import reactLogo from "@/assets/logos/react.svg";
 import typeScriptLogo from "@/assets/logos/typescript.png";
 import jsLogo from "@/assets/logos/js.png";
@@ -15,8 +17,19 @@ import intellij from "@/assets/logos/intellij.svg";
 import tailwind from "@/assets/logos/tailwindcss.svg";
 import springboot from "@/assets/logos/springboot.svg";
 
-type NormalTech = { type: "normal"; name: string; src: string };
-type GithubTech = { type: "github"; name: string; srcDark: string; srcLight: string };
+type NormalTech = {
+  type: "normal";
+  name: string;
+  src: string;
+};
+
+type GithubTech = {
+  type: "github";
+  name: string;
+  srcDark: string;
+  srcLight: string;
+};
+
 type Tech = NormalTech | GithubTech;
 
 const techs: Tech[] = [
@@ -37,39 +50,106 @@ const techs: Tech[] = [
 ];
 
 export default function TechStack() {
-  const imgStyle = "h-12 w-12 object-contain inline-block will-change-transform";
+  const controls = useAnimation();
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const imgStyle = "h-12 w-12 object-contain shrink-0";
+
+  useEffect(() => {
+    if (!trackRef.current) return;
+
+    const el = trackRef.current;
+
+    const startMarquee = () => {
+      const width = el.scrollWidth / 2;
+      if (width === 0) return;
+
+      controls.start({
+        x: -width,
+        transition: { duration: 20, ease: "linear", repeat: Infinity },
+      });
+    };
+
+    // Wait for all images inside the track to load
+    const images = el.querySelectorAll("img");
+    let loadedCount = 0;
+
+    images.forEach((img) => {
+      if (img.complete) loadedCount++;
+      else
+        img.addEventListener("load", () => {
+          loadedCount++;
+          if (loadedCount === images.length) startMarquee();
+        });
+    });
+
+    // If all images were already loaded
+    if (loadedCount === images.length) startMarquee();
+
+    // Handle resize / orientation changes
+    const handleResize = () => {
+      controls.stop(); // stop ongoing animation
+      startMarquee();
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [controls]);
 
   return (
     <div className="flex flex-col mt-4">
       <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
-      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden">
-        {/* Marquee wrapper */}
-        <div className="whitespace-nowrap animate-marquee flex items-center">
+      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
+        <motion.div
+          ref={trackRef}
+          className="flex gap-10 items-center w-max"
+          animate={controls}
+          onHoverStart={() =>
+            controls.start({ transition: { duration: 60 } })
+          }
+          onHoverEnd={() =>
+            controls.start({ transition: { duration: 20 } })
+          }
+        >
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
-              className="relative group inline-block mr-10"
+              className="relative group flex items-center"
               whileHover={{ scale: 1.2 }}
             >
-              {tech.type === "normal" && <img src={tech.src} alt={tech.name} className={imgStyle} />}
+              {tech.type === "normal" && (
+                <img src={tech.src} alt={tech.name} className={imgStyle} />
+              )}
+
               {tech.type === "github" && (
                 <>
-                  <img src={tech.srcDark} alt={tech.name} className={`${imgStyle} hidden dark:block`} />
-                  <img src={tech.srcLight} alt={tech.name} className={`${imgStyle} dark:hidden`} />
+                  <img
+                    src={tech.srcDark}
+                    alt={tech.name}
+                    className={`${imgStyle} hidden dark:block`}
+                  />
+                  <img
+                    src={tech.srcLight}
+                    alt={tech.name}
+                    className={`${imgStyle} dark:hidden`}
+                  />
                 </>
               )}
-              <span className="absolute -bottom-6 left-1/2 -translate-x-1/2
-                text-xs px-2 py-1 rounded-md
-                bg-white dark:bg-darkCard
-                text-black dark:text-white
-                opacity-0 group-hover:opacity-100 transition
-                whitespace-nowrap pointer-events-none">
+
+              <span
+                className="absolute -bottom-6 left-1/2 -translate-x-1/2
+                  text-xs px-2 py-1 rounded-md
+                  bg-white dark:bg-darkCard
+                  text-black dark:text-white
+                  opacity-0 group-hover:opacity-100 transition
+                  whitespace-nowrap pointer-events-none"
+              >
                 {tech.name}
               </span>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
