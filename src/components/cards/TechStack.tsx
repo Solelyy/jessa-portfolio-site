@@ -37,19 +37,19 @@ const techs: Tech[] = [
 ];
 
 export default function TechStack() {
-  const imgStyle = "h-12 w-12 object-contain shrink-0";
+  const imgStyle = "h-12 w-12 object-contain inline-block will-change-transform";
 
   return (
     <div className="flex flex-col mt-4">
-      <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
+      <p className="text-center text-lg opacity-40 text-accent">Tech Stack and Tools</p>
 
-      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
+      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden">
         {/* Marquee wrapper */}
-        <div className="flex animate-marquee gap-10">
+        <div className="whitespace-nowrap animate-marquee">
           {[...techs, ...techs].map((tech, index) => (
             <motion.div
               key={index}
-              className="relative group flex items-center"
+              className="relative group inline-block mr-10"
               whileHover={{ scale: 1.2 }}
             >
               {tech.type === "normal" && <img src={tech.src} alt={tech.name} className={imgStyle} />}
