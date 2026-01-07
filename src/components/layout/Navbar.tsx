@@ -9,7 +9,7 @@ import NavActions from "../ui/NavActions";
 export default function Navbar() {
     const baseNavLinkClass = ({isActive} : {isActive:boolean}) =>
         isActive 
-        ? "font-bold text-accent border py-2 px-4 rounded-3xl shadow-md md:border-none"
+        ? "font-bold text-accent border py-2 px-4 rounded-3xl shadow-md"
         : "font-regular hover:text-pink-500";
 
     const [theme, setTheme] = useState <"light" |"dark"> (() => {
