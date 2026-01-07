@@ -7,7 +7,7 @@ import Contact from "./pages/Contact";
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col p-6 bg-lightBg dark:bg-darkBg text-black dark:text-white">
+    <div className="min-h-screen flex flex-col p-4 md:p-6 bg-lightBg dark:bg-darkBg text-black dark:text-white">
 
     <header>
       <Navbar />
