@@ -6,7 +6,7 @@ import TechStack from "@/components/cards/TechStack";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-4 m-12">
+    <main className="flex flex-col gap-4 mt-10 mb-10 md:m-12">
       {/*Profile Section */}
       <div className="flex flex-col lg:flex-row lg:items-stetch gap-4">
         {/* Left: Profile */}
