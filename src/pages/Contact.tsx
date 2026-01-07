@@ -89,7 +89,7 @@ export default function Contact() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="flex flex-col items-center justify-center min-h-screen px-4 py-12 sm:px-6 lg:px-8 lg:pt-0"
+            className="flex flex-col items-center justify-center min-h-screen px-4 py-8 sm:px-6 lg:px-8 lg:pt-0"
         >
             <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 sm:p-8 lg:p-10">
                 <div className="text-center mb-6">
