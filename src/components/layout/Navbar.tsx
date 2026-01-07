@@ -2,11 +2,14 @@ import {Link, NavLink} from "react-router-dom";
 import darkMode from "@/assets/icons/darkmode.svg"
 import lightMode from "@/assets/icons/lightmode.svg"
 import { useEffect, useState } from "react";
+import menu from "@/assets/icons/menu.svg";
+import back from "@/assets/icons/menu-back.svg";
+import NavActions from "../ui/NavActions";
 
 export default function Navbar() {
-    const navLinkClass = ({isActive} : {isActive:boolean}) =>
+    const baseNavLinkClass = ({isActive} : {isActive:boolean}) =>
         isActive 
-        ? "font-bold text-accent border py-2 px-4 rounded-3xl shadow-md"
+        ? "font-bold text-accent border py-2 px-4 rounded-3xl shadow-md md:border-none"
         : "font-regular hover:text-pink-500";
 
     const [theme, setTheme] = useState <"light" |"dark"> (() => {
@@ -23,9 +26,15 @@ export default function Navbar() {
     };
 
     const themeIcon = theme === "dark" ? lightMode : darkMode;
-    
+
+    //menu on mobile screens
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const handleMenu = () => setIsMenuOpen(prev => !prev);
+
     return (
-        <nav className="bg-white dark:bg-darkCard flex gap-4 items-center py-2 px-4 rounded-3xl border border-lightBorder dark:border-darkBorder justify-evenly h-12 w-1/2 mx-auto min-w-sm"> 
+        <>
+        <nav className="bg-white dark:bg-darkCard flex gap-4 items-center py-2 px-8 md:px-4 rounded-3xl border border-lightBorder dark:border-darkBorder justify-between md:justify-evenly h-12 w-full md:w-1/2 mx-auto min-w-sm"> 
             <Link to="/">
             <img 
             src="/site-logo.png"
@@ -34,19 +43,45 @@ export default function Navbar() {
             />
             </Link>
 
-            <NavLink to="/personal" className={navLinkClass}>Personal</NavLink>
+            <NavActions 
+            className={(props) => `${baseNavLinkClass(props)} hidden md:block`} 
+            onItemClick={toggleTheme} 
+            src={themeIcon}
+            themeStyle="hidden md:block"
+            />
 
-            <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
-
-            {/*Theme toggle */}
-            <button
-            onClick={toggleTheme}
+            {/*Menu*/}
+            <button 
+            className="block md:hidden " 
+            onClick={handleMenu}
             >
-                <img src= {themeIcon}
-                alt="theme-toggle-icon"
-                className="h-6 w-auto" 
-                />
+                <img src={menu} 
+                alt="menu-icon"
+                className="h-4 w-auto hover:scale-110" />
             </button>
         </nav>
+
+        {/* Mobile side menu */}
+        <div 
+        className={`mobile-menu 
+        fixed top-0 right-0 h-full w-3/4 md:w-1/2 bg-white dark:bg-darkCard shadow-lg p-4 z-50 pt-8.5 flex flex-col
+        transform transition-transform duration-300 ease-in-out
+        ${isMenuOpen ? "translate-x-0" : "translate-x-full"} 
+        md:hidden`}
+        >
+            <button onClick={handleMenu}>
+                <img src={back} className="h-6 w-auto hover:scale-110"></img>
+            </button>
+
+            <div className="flex flex-col items-center gap-10 pt-20">
+                <NavActions 
+                className={(props) => `${baseNavLinkClass(props)} md:hidden`} 
+                onItemClick={toggleTheme} 
+                src={themeIcon}
+                themeStyle="md:hidden"
+                />
+            </div>
+        </div>
+        </>
     );
 }
