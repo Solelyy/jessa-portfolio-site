@@ -14,7 +14,7 @@ export default function Home() {
       {/* Profile Section */}
       <div className="flex flex-col lg:flex-row lg:items-stretch gap-4">
         <motion.div
-          className="w-full lg:w-3/5"
+          className="w-full lg:w-3/5 lg:flex-1"
           variants={item}
           initial="hidden"
           whileInView="show"
@@ -25,6 +25,7 @@ export default function Home() {
 
         <div className="w-full lg:w-2/5 flex flex-col gap-4">
           <motion.div
+            className="flex-1"
             variants={item}
             initial="hidden"
             whileInView="show"
@@ -34,6 +35,7 @@ export default function Home() {
           </motion.div>
 
           <motion.div
+            className="flex-1"
             variants={item}
             initial="hidden"
             whileInView="show"
