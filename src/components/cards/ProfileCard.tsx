@@ -8,7 +8,7 @@ export default function ProfileCard() {
     }
 
     return (
-        <main className="flex flex-col md:flex-row justify-center h-full gap-6 lg:gap-10 items-center p-6 sm:p-8 lg:p-10 bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300">
+        <main className="flex flex-col md:flex-row justify-center h-full gap-6 lg:gap-10 items-center p-6 sm:p-8 lg:p-10 bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl card-shadow">
              {/* Image container */}
             <div className="relative flex items-center justify-center shrink-0">
                 <img
@@ -32,7 +32,7 @@ export default function ProfileCard() {
 
                 <button 
                     onClick={() => goToProjects()}
-                    className="bg-accent hover:bg-accent/90 text-white font-medium px-6 py-2 rounded-lg mt-5 transition-all duration-200 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md"
+                    className="bg-accent hover:bg-accent/90 text-white font-medium px-6 py-2 rounded-lg mt-5 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md"
                 >
                     View Projects
                 </button>        

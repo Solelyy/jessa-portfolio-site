@@ -25,7 +25,7 @@ export default function ProjectCard({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-8 flex flex-col">
+    <div className="bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-8 flex flex-col card-shadow">
       
       {/* Image */}
       <div className="border border-lightBorder dark:border-darkBorder h-48 rounded-md overflow-hidden">

@@ -1,2 +1,6 @@
 @import "tailwindcss";
 @config "../tailwind.config.cjs";
+
+.card-shadow {
+  @apply shadow-sm hover:shadow-md transition-shadow duration-300 dark:shadow-darkBorder dark:hover:shadow-darkBorder;
+}

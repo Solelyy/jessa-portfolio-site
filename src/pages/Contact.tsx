@@ -91,16 +91,16 @@ export default function Contact() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="flex flex-col items-center justify-center min-h-screen px-4 py-8 sm:px-6 lg:px-8 lg:pt-0"
         >
-            <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 sm:p-8 lg:p-10">
+            <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl bg-white dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 sm:p-8 lg:p-10 card-shadow">
                 <div className="text-center mb-6">
                     <h2 className="font-bold text-lg sm:text-xl lg:text-2xl text-gray-900 dark:text-white">
                         Get in Touch
                     </h2>
                 </div>
 
-                <form id="contact-form" className="flex flex-col gap-5" onSubmit={handleSubmit}>
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <form id="contact-form" className="flex flex-col gap-3" onSubmit={handleSubmit}>
+                    <div className="flex flex-col gap-2 text-sm">
+                        <label htmlFor="name" className="font-medium text-gray-700 dark:text-gray-300">
                             Name
                         </label>
                         <input 
@@ -115,8 +115,8 @@ export default function Contact() {
                         />
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <div className="flex flex-col gap-2 text-sm">
+                        <label htmlFor="email" className="font-medium text-gray-700 dark:text-gray-300">
                             Email
                         </label>
                         <input 
@@ -129,13 +129,16 @@ export default function Contact() {
                             required
                             className="w-full px-4 py-3 rounded-lg border border-lightBorder dark:border-darkBorder bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200"
                         />
-                        {formData.email && !emailIsValid && (
-                            <p className="text-red-400 text-xs">Please enter a valid email address.</p>
-                        )}
+                       <p
+                        className={`text-xs text-accent transition-opacity duration-500 
+                        ${formData.email && !emailIsValid ? "opacity-100" : "opacity-0 pointer-none:"}`}
+                        > 
+                            Please input a valid email address.
+                        </p> 
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="message" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <div className="flex flex-col gap-2 text-sm">
+                        <label htmlFor="message" className="font-medium text-gray-700 dark:text-gray-300">
                             Message
                         </label>
                         <textarea 
@@ -149,16 +152,39 @@ export default function Contact() {
                         />
                     </div>
 
-                    {status === "error" && errorMessage && (
-                        <p className="text-red-500 text-sm">{errorMessage}</p>
-                    )}
+                    {/*Messages*/}
 
-                    {status === "success" && (
-                        <p className="text-green-500 text-sm text-center transition-opacity duration-500 opacity-100 animate-fadeOut">
+                    <div className="relative h-5">
+                        {/* Fill details */}
+                        <p
+                            className={`absolute inset-0 text-center text-sm text-accent transition-opacity duration-500
+                            ${
+                                isButtonDisabled &&
+                                status === "idle"
+                                ? "opacity-100"
+                                : "opacity-0 pointer-events-none"
+                            }`}
+                        >
+                            Fill in the details 🌸
+                        </p>
+
+                        {/* Error */}
+                        <p
+                            className={`absolute inset-0 text-center text-sm text-red-500 transition-opacity duration-500
+                            ${status === "error" ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                        >
+                            {errorMessage}
+                        </p>
+
+                        {/* Success */}
+                        <p
+                            className={`absolute inset-0 text-center text-sm text-green-500 transition-opacity duration-500
+                            ${status === "success" ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                        >
                             Your message has been sent. Promise I'll reply 🌸
                         </p>
-                    )}
-
+                    </div>
+                    
                     <button 
                         type="submit"
                         disabled= {isButtonDisabled}

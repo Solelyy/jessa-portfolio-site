@@ -57,7 +57,7 @@ export default function TechStack() {
     <div className="flex flex-col mt-4">
       <p className="text-center text-lg opacity-40">Tech Stack and Tools</p>
 
-      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBg rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center">
+      <div className="relative bg-white dark:bg-darkCard border border-white dark:border-darkBorder rounded-2xl h-32 w-full mt-4 overflow-hidden flex items-center card-shadow">
         <div className="flex gap-10 flex-nowrap animate-marquee min-w-max">
           {[...techs, ...techs, ...techs].map((tech, index) => (
             <motion.div

@@ -34,7 +34,7 @@ export default function Navbar() {
 
     return (
         <>
-        <nav className="bg-white dark:bg-darkCard flex gap-4 items-center py-2 px-8 md:px-4 rounded-3xl border border-lightBorder dark:border-darkBorder justify-between md:justify-evenly h-12 w-full md:w-1/2 mx-auto md:min-w-sm md:max-w-xl"> 
+        <nav className="bg-white dark:bg-darkCard flex gap-4 items-center py-2 px-8 md:px-4 rounded-3xl border border-lightBorder dark:border-darkBorder justify-between md:justify-evenly h-12 w-full md:w-1/2 mx-auto md:min-w-sm md:max-w-xl card-shadow"> 
             <Link to="/">
             <img 
             src="/site-logo.png"
