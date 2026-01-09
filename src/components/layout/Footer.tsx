@@ -8,7 +8,7 @@ export default function Footer() {
         <SocialLinks className="justify-center my-4" />
 
         <p>
-          &copy; 2025 Jessa Gozun. Built using React —{" "}
+          &copy; 2026 Jessa Gozun. Built using React —{" "}
           <a
             href="https://github.com/Solelyy/jessa-portfolio-site"
             target="_blank"
