@@ -14,7 +14,7 @@ export default function ProfileCard() {
                 <img
                     src={myPic}
                     alt="My picture"
-                    className="h-54 w-54 sm:h-56 sm:w-56 lg:h-72 lg:w-52 object-cover rounded-full sm:rounded-xl shadow-md shrink-0"
+                    className="h-54 w-54 sm:h-56 sm:w-56 lg:h-72 lg:w-52 object-cover rounded-xl shadow-md shrink-0"
                 />
             </div>
 
