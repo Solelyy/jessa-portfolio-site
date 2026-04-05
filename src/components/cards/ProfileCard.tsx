@@ -23,11 +23,10 @@ export default function ProfileCard() {
                     Hi, I'm <span className="text-accent">Jessa Gozun</span>
                 </h2>
                 <h2 className="text-accent/70 text-base sm:text-lg lg:text-xl mb-3 font-medium">
-                    Aspiring Junior Full-Stack Developer
+                    Frontend Web Developer
                 </h2>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                    I'm pursuing BS Information Technology at Quezon City University. I build responsive
-                    web applications with React and TypeScript, and backend services using Spring Boot. Willing to learn new stack and open for opportunities.
+                    I'm focusing on building modern frontend applications with React, Next.js, React Router, and TypeScript. Currently working on scalable UI architecture while continuously improving through real-world projects. 
                 </p>
 
                 <button 
