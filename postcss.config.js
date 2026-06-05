@@ -4,7 +4,7 @@ import tailwindConfig from "./tailwind.config.cjs";
 
 export default {
   plugins: [
-    tailwindcss({ config: tailwindConfig }),
+    tailwindcss({ config: tailwindConfig, from: undefined }),
     autoprefixer(),
   ],
 };
