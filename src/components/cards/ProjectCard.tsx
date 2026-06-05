@@ -74,11 +74,11 @@ export default function ProjectCard({
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 mt-4 text-sm">
+        <div className="flex flex-col md:flex-row gap-3 mt-4 text-sm w-full">
           {demoLink && (
             <Link
               to={demoLink}
-              className="bg-accent py-1 px-4 rounded-md text-white whitespace-nowrap flex items-center justify-between gap-4 hover:opacity-90 transition"
+              className="bg-accent py-2 px-4 rounded-md text-white flex items-center justify-center gap-2 hover:opacity-90 transition flex-1 md:flex-none md:whitespace-nowrap"
             >
               <TvMinimalPlay size={15} />
               Watch Demo
@@ -90,7 +90,7 @@ export default function ProjectCard({
               href={projectLink}
               target="_blank"
               rel="noopener noreferrer"
-              className={style}
+              className={`${style} flex-1 md:flex-none md:whitespace-nowrap justify-center`}
             >
               <Globe size={15} />
               View Website
@@ -101,7 +101,11 @@ export default function ProjectCard({
             href={codeLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white dark:bg-darkBg border border-lightBorder dark:border-darkBorder py-1 px-4 rounded-md text-black dark:text-white whitespace-nowrap inline-flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-darkBorder transition"
+            className={
+              projectLink || demoLink
+                ? "bg-white dark:bg-darkBg border border-lightBorder dark:border-darkBorder py-2 px-4 rounded-md text-black dark:text-white flex items-center justify-center gap-2 hover:bg-gray-50 dark:hover:bg-darkBorder transition flex-1 md:flex-none md:whitespace-nowrap"
+                : "bg-accent py-2 px-4 rounded-md text-white flex items-center justify-center gap-2 hover:opacity-90 transition flex-1 md:flex-none md:whitespace-nowrap"
+            }
           >
             <FolderCode size={15} />
             See Code
