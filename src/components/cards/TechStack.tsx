@@ -16,12 +16,19 @@ import vscode from "@/assets/logos/vscode.svg";
 import intellij from "@/assets/logos/intellij.svg";
 import tailwind from "@/assets/logos/tailwindcss.svg";
 import springboot from "@/assets/logos/springboot.svg";
+import nextjs from "@/assets/logos/nextjs.svg";
 
 type NormalTech = { type: "normal"; name: string; src: string };
-type GithubTech = { type: "github"; name: string; srcDark: string; srcLight: string };
+type GithubTech = {
+  type: "github";
+  name: string;
+  srcDark: string;
+  srcLight: string;
+};
 type Tech = NormalTech | GithubTech;
 
 const techs: Tech[] = [
+  { type: "normal", name: "Next.js", src: nextjs },
   { type: "normal", name: "React", src: reactLogo },
   { type: "normal", name: "TypeScript", src: typeScriptLogo },
   { type: "normal", name: "JavaScript", src: jsLogo },
@@ -35,7 +42,12 @@ const techs: Tech[] = [
   { type: "normal", name: "Figma", src: figma },
   { type: "normal", name: "VS Code", src: vscode },
   { type: "normal", name: "IntelliJ", src: intellij },
-  { type: "github", name: "GitHub", srcLight: gitHubLight, srcDark: gitHubDark },
+  {
+    type: "github",
+    name: "GitHub",
+    srcLight: gitHubLight,
+    srcDark: gitHubDark,
+  },
 ];
 
 export default function TechStack() {
@@ -65,11 +77,21 @@ export default function TechStack() {
               className="relative group flex items-center"
               onClick={() => handleTap(index)}
             >
-              {tech.type === "normal" && <img src={tech.src} alt={tech.name} className={imgStyle} />}
+              {tech.type === "normal" && (
+                <img src={tech.src} alt={tech.name} className={imgStyle} />
+              )}
               {tech.type === "github" && (
                 <>
-                  <img src={tech.srcDark} alt={tech.name} className={`${imgStyle} hidden dark:block`} />
-                  <img src={tech.srcLight} alt={tech.name} className={`${imgStyle} dark:hidden`} />
+                  <img
+                    src={tech.srcDark}
+                    alt={tech.name}
+                    className={`${imgStyle} hidden dark:block`}
+                  />
+                  <img
+                    src={tech.srcLight}
+                    alt={tech.name}
+                    className={`${imgStyle} dark:hidden`}
+                  />
                 </>
               )}
 
