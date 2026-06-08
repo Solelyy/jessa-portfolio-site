@@ -74,7 +74,7 @@ export default function ProjectCard({
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col md:flex-row gap-3 mt-4 text-sm w-full">
+        <div className="flex flex-col gap-3 mt-4 text-sm w-full">
           {demoLink && (
             <Link
               to={demoLink}
@@ -90,7 +90,7 @@ export default function ProjectCard({
               href={projectLink}
               target="_blank"
               rel="noopener noreferrer"
-              className={`${style} flex-1 md:flex-none md:whitespace-nowrap justify-center`}
+              className={`${style} flex-1 md:flex-none md:whitespace-nowrap justify-center py-2 px-4`}
             >
               <Globe size={15} />
               View Website
